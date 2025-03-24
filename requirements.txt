@@ -4,3 +4,4 @@ langchain_community
 langchain
 wikipedia
 arxiv
+duckduckgo-search
