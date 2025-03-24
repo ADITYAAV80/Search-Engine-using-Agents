@@ -8,6 +8,8 @@ from langchain.callbacks import StreamlitCallbackHandler
 import os
 from dotenv import load_dotenv
 from langchain import hub
+from langchain.agents import AgentExecutor
+
 # from langchain.tools import BaseTool
 # from typing import Any
 
@@ -69,10 +71,12 @@ if query:
     llm = ChatGroq(model="Llama3-8b-8192",streaming=True)
     prompt = hub.pull("hwchase17/openai-functions-agent")
     search_agent= create_openai_tools_agent(llm,tools,prompt)
+    agent_executor = AgentExecutor(agent=search_agent,tools=tools,verbose=True)
+
     ###
 
     with st.chat_message("assistant"):
         st_cb = StreamlitCallbackHandler(st.container(),expand_new_thoughts=True)
-        response = search_agent.run({"input":query,"chat_history":st.session_state.messages}, callbacks=[st_cb])
+        response = agent_executor.invoke({"input":query}, callbacks=[st_cb])
         st.session_state.messages.append({'role': 'assistant', 'content': response})
         st.write(response)
