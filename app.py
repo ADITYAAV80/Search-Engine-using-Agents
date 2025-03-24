@@ -2,11 +2,12 @@ import streamlit as st
 from langchain_groq import ChatGroq
 from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
 from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun,DuckDuckGoSearchRun
-from langchain.agents import initialize_agent,AgentType
+from langchain.agents import create_openai_tools_agent,AgentType
 # from langchain_community.tools.asknews import AskNewsSearch
 from langchain.callbacks import StreamlitCallbackHandler
 import os
 from dotenv import load_dotenv
+from langchain import hub
 # from langchain.tools import BaseTool
 # from typing import Any
 
@@ -66,7 +67,8 @@ if query:
 
     ###
     llm = ChatGroq(model="Llama3-8b-8192",streaming=True)
-    search_agent= initialize_agent(tools=tools,llm=llm,agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, handle_parsing_errors="Partial response: Here’s what I found before stopping...")
+    prompt = hub.pull("hwchase17/openai-functions-agent")
+    search_agent= create_openai_tools_agent(llm,tools,prompt)
     ###
 
     with st.chat_message("assistant"):
