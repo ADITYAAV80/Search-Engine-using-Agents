@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 # os.environ["ASKNEWS_CLIENT_ID"] = os.getenv("ASKNEWS_CLIENT_ID")
 # os.environ["ASKNEWS_CLIENT_SECRET"] = os.getenv("ASKNEWS_CLIENT_SECRET")
-os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 
 
 
