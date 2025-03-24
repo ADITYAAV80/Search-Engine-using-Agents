@@ -69,8 +69,6 @@ if query:
     search_agent= initialize_agent(tools=tools,llm=llm,agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, handle_parsing_errors="Partial response: Here’s what I found before stopping...")
     ###
 
-    st.write(f"Available tools: {search_agent.tools}")
-
     with st.chat_message("assistant"):
         st_cb = StreamlitCallbackHandler(st.container(),expand_new_thoughts=True)
         response = search_agent.run({"input":query,"chat_history":st.session_state.messages}, callbacks=[st_cb])
